@@ -109,24 +109,3 @@ make test
 ## Colección de requests para pruebas
 
 Puedes usar [docs/requests.http](docs/requests.http) con la extensión REST Client de VS Code para ejecutar rápidamente los endpoints y tomar evidencias.
-
-## Evidencias requeridas
-
-Guardar las capturas en `evidencias/`:
-
-1. `01-swagger-ui.png`
-2. `02-docker-logs.png`
-3. `03-docker-running.png`
-4. `04-api-call-products.png`
-5. `05-api-call-chat.png`
-6. `06-database.png`
-
-> Importante: incluir nombre de usuario y fecha/hora visibles en las capturas.
-
-## Convención de commits sugerida
-
-- `feat:` nuevas funcionalidades
-- `fix:` correcciones
-- `docs:` documentación
-- `test:` pruebas
-- `refactor:` mejoras internas sin cambiar comportamiento
