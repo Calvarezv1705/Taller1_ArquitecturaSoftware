@@ -1,0 +1,23 @@
+# Entorno virtual
+venv/
+.venv/
+.venv312/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Base de datos y evidencias temporales
+data/*.db
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Docker
+*.log
