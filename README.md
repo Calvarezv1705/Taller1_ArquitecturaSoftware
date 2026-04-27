@@ -61,6 +61,12 @@ e-commerce-chat-ai/
 uvicorn src.infrastructure.api.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
+O con Makefile:
+
+```bash
+make run
+```
+
 Swagger: http://localhost:8000/docs
 
 ## Ejecutar con Docker
@@ -93,6 +99,16 @@ docker compose up --build
 ```bash
 pytest
 ```
+
+O con Makefile:
+
+```bash
+make test
+```
+
+## Colección de requests para pruebas
+
+Puedes usar [docs/requests.http](docs/requests.http) con la extensión REST Client de VS Code para ejecutar rápidamente los endpoints y tomar evidencias.
 
 ## Evidencias requeridas
 

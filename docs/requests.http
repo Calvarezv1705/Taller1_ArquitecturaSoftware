@@ -1,0 +1,29 @@
+### Health
+GET http://localhost:8000/health
+
+### List products
+GET http://localhost:8000/products
+
+### Filter by brand
+GET http://localhost:8000/products?brand=Nike
+
+### Filter by category
+GET http://localhost:8000/products?category=Running
+
+### Product detail
+GET http://localhost:8000/products/1
+
+### Chat request (requiere GEMINI_API_KEY válida)
+POST http://localhost:8000/chat
+Content-Type: application/json
+
+{
+  "session_id": "user123",
+  "message": "Hola, busco zapatos para correr talla 42"
+}
+
+### Chat history
+GET http://localhost:8000/chat/history/user123?limit=10
+
+### Clear history
+DELETE http://localhost:8000/chat/history/user123
