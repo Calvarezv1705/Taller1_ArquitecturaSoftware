@@ -1,1 +1,1 @@
-"""Paquete de pruebas unitarias y de integración."""
+"""Paquete de pruebas unitarias del proyecto."""
