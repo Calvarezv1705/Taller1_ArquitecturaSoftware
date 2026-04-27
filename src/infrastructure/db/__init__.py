@@ -1,1 +1,1 @@
-"""Módulo de base de datos y modelos ORM."""
+"""Sub-paquete de base de datos y modelos ORM."""

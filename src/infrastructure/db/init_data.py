@@ -1,11 +1,15 @@
-"""Carga de datos semilla para el catálogo de productos."""
+"""Carga de datos semilla para el catálogo de productos.
+
+Define una lista de 10 productos iniciales realistas y variados,
+y proporciona una función para insertarlos en la base de datos
+si la tabla de productos está vacía.
+"""
 
 from __future__ import annotations
 
 from sqlalchemy.orm import Session
 
 from .models import ProductModel
-
 
 INITIAL_PRODUCTS: list[dict] = [
     {
@@ -109,13 +113,23 @@ INITIAL_PRODUCTS: list[dict] = [
         "description": "Tenis lifestyle con diseño moderno y llamativo.",
     },
 ]
+"""list[dict]: Datos semilla con 10 productos variados de distintas marcas,
+categorías, tallas y rangos de precio ($70 - $170).
+"""
 
 
 def load_initial_data(db: Session) -> None:
-    """Carga datos iniciales si la tabla de productos está vacía.
+    """Carga los datos iniciales del catálogo si la tabla de productos está vacía.
+
+    Verifica la cantidad de registros existentes y, solo si es cero,
+    inserta los 10 productos definidos en ``INITIAL_PRODUCTS``.
 
     Args:
-        db: Sesión activa de SQLAlchemy.
+        db (Session): Sesión activa de SQLAlchemy.
+
+    Note:
+        Esta función es idempotente: si ya existen productos no realiza
+        ninguna inserción.
     """
     existing_count = db.query(ProductModel).count()
     if existing_count > 0:

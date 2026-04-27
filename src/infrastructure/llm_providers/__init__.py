@@ -1,1 +1,1 @@
-"""Servicios de proveedores LLM (Gemini)."""
+"""Sub-paquete de proveedores de inteligencia artificial."""

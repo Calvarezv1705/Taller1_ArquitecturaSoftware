@@ -1,4 +1,8 @@
-"""Repositorio SQLAlchemy para historial de chat."""
+"""Repositorio SQLAlchemy para historial de chat.
+
+Implementa el contrato ``IChatRepository`` del dominio utilizando
+SQLAlchemy como ORM para persistir mensajes de conversación.
+"""
 
 from __future__ import annotations
 
@@ -10,14 +14,32 @@ from src.infrastructure.db.models import ChatMemoryModel
 
 
 class SQLChatRepository(IChatRepository):
-    """Implementación concreta de `IChatRepository` usando SQLAlchemy."""
+    """Implementación concreta de ``IChatRepository`` usando SQLAlchemy.
+
+    Permite guardar, consultar y eliminar mensajes de conversación
+    agrupados por sesión de usuario.
+
+    Attributes:
+        db (Session): Sesión activa de SQLAlchemy inyectada en el constructor.
+    """
 
     def __init__(self, db: Session) -> None:
-        """Inicializa el repositorio con sesión de base de datos."""
+        """Inicializa el repositorio con una sesión de base de datos.
+
+        Args:
+            db (Session): Sesión activa de SQLAlchemy.
+        """
         self.db = db
 
     def save_message(self, message: ChatMessage) -> ChatMessage:
-        """Guarda un mensaje de chat."""
+        """Guarda un mensaje de chat en la base de datos.
+
+        Args:
+            message (ChatMessage): Entidad del mensaje a persistir.
+
+        Returns:
+            ChatMessage: El mensaje guardado con su ``id`` asignado.
+        """
         model = self._entity_to_model(message)
         self.db.add(model)
         self.db.commit()
@@ -25,7 +47,18 @@ class SQLChatRepository(IChatRepository):
         return self._model_to_entity(model)
 
     def get_session_history(self, session_id: str, limit: int = 10) -> list[ChatMessage]:
-        """Obtiene historial cronológico de una sesión."""
+        """Obtiene el historial cronológico de una sesión.
+
+        Consulta los mensajes más recientes y los retorna en orden
+        cronológico (del más antiguo al más reciente).
+
+        Args:
+            session_id (str): Identificador de la sesión.
+            limit (int): Número máximo de mensajes a retornar. Por defecto 10.
+
+        Returns:
+            list[ChatMessage]: Lista de mensajes en orden cronológico.
+        """
         query = (
             self.db.query(ChatMemoryModel)
             .filter(ChatMemoryModel.session_id == session_id)
@@ -37,7 +70,14 @@ class SQLChatRepository(IChatRepository):
         return [self._model_to_entity(model) for model in models]
 
     def delete_session_history(self, session_id: str) -> int:
-        """Elimina todos los mensajes de una sesión y retorna cuántos borró."""
+        """Elimina todos los mensajes de una sesión y retorna cuántos borró.
+
+        Args:
+            session_id (str): Identificador de la sesión a limpiar.
+
+        Returns:
+            int: Cantidad de mensajes eliminados.
+        """
         deleted_count = (
             self.db.query(ChatMemoryModel)
             .filter(ChatMemoryModel.session_id == session_id)
@@ -47,7 +87,18 @@ class SQLChatRepository(IChatRepository):
         return int(deleted_count)
 
     def get_recent_messages(self, session_id: str, limit: int = 6) -> list[ChatMessage]:
-        """Obtiene los mensajes más recientes en orden cronológico."""
+        """Obtiene los mensajes más recientes de una sesión en orden cronológico.
+
+        Crucial para construir el contexto conversacional que se envía
+        al servicio de IA.
+
+        Args:
+            session_id (str): Identificador de la sesión.
+            limit (int): Número máximo de mensajes recientes. Por defecto 6.
+
+        Returns:
+            list[ChatMessage]: Lista de mensajes recientes en orden cronológico.
+        """
         query = (
             self.db.query(ChatMemoryModel)
             .filter(ChatMemoryModel.session_id == session_id)
@@ -60,7 +111,14 @@ class SQLChatRepository(IChatRepository):
 
     @staticmethod
     def _model_to_entity(model: ChatMemoryModel) -> ChatMessage:
-        """Convierte un modelo ORM en entidad de dominio."""
+        """Convierte un modelo ORM en entidad de dominio.
+
+        Args:
+            model (ChatMemoryModel): Modelo ORM de SQLAlchemy.
+
+        Returns:
+            ChatMessage: Entidad de dominio equivalente.
+        """
         return ChatMessage(
             id=model.id,
             session_id=model.session_id,
@@ -71,7 +129,14 @@ class SQLChatRepository(IChatRepository):
 
     @staticmethod
     def _entity_to_model(entity: ChatMessage) -> ChatMemoryModel:
-        """Convierte una entidad de dominio en modelo ORM."""
+        """Convierte una entidad de dominio en modelo ORM.
+
+        Args:
+            entity (ChatMessage): Entidad de dominio.
+
+        Returns:
+            ChatMemoryModel: Modelo ORM listo para persistir.
+        """
         return ChatMemoryModel(
             id=entity.id,
             session_id=entity.session_id,

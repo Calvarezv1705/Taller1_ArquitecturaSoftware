@@ -1,1 +1,1 @@
-"""Implementaciones concretas de repositorios."""
+"""Sub-paquete de implementaciones concretas de repositorios."""

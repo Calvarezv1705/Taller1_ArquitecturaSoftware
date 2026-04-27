@@ -1,1 +1,1 @@
-"""Módulo de API HTTP con FastAPI."""
+"""Sub-paquete de la API REST con FastAPI."""

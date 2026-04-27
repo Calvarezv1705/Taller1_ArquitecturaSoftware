@@ -1,4 +1,8 @@
-"""Modelos ORM de SQLAlchemy para persistencia de datos."""
+"""Modelos ORM de SQLAlchemy para persistencia de datos.
+
+Define la representación relacional de las entidades del dominio,
+mapeando cada modelo a una tabla de la base de datos SQLite.
+"""
 
 from __future__ import annotations
 
@@ -11,7 +15,22 @@ from .database import Base
 
 
 class ProductModel(Base):
-    """Modelo ORM para la tabla `products`."""
+    """Modelo ORM para la tabla ``products``.
+
+    Representa un zapato en el catálogo del e-commerce. Incluye índices
+    en las columnas ``brand`` y ``category`` para optimizar filtros frecuentes.
+
+    Attributes:
+        id (int): Clave primaria autoincremental.
+        name (str): Nombre del producto (máx. 200 caracteres).
+        brand (str): Marca del producto (máx. 100 caracteres).
+        category (str): Categoría (Running, Casual, Formal) (máx. 100 caracteres).
+        size (str): Talla del zapato (máx. 20 caracteres).
+        color (str): Color del producto (máx. 50 caracteres).
+        price (float): Precio en dólares.
+        stock (int): Unidades disponibles en inventario.
+        description (str): Descripción textual del producto.
+    """
 
     __tablename__ = "products"
 
@@ -32,7 +51,18 @@ class ProductModel(Base):
 
 
 class ChatMemoryModel(Base):
-    """Modelo ORM para la tabla `chat_memory`."""
+    """Modelo ORM para la tabla ``chat_memory``.
+
+    Almacena cada mensaje de la conversación entre el usuario y el
+    asistente de IA, agrupados por ``session_id``.
+
+    Attributes:
+        id (int): Clave primaria autoincremental.
+        session_id (str): Identificador de la sesión de chat (indexado).
+        role (str): Rol del autor (``'user'`` o ``'assistant'``).
+        message (str): Contenido del mensaje.
+        timestamp (datetime): Fecha y hora de creación del mensaje (UTC).
+    """
 
     __tablename__ = "chat_memory"
 
